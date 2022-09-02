@@ -5,6 +5,7 @@
 #include <iostream>
 #include <raylib.h>
 
+#include "Convertir.hpp"
 #include "RayBoxRectangle.hpp"
 #include "RayRectangle.hpp"
 #include "RayCircle.hpp"
@@ -15,7 +16,7 @@
 
 int main(int argc, char *argv[])
 {
-    InitWindow(680, 600, "RayBox 1.0");
+    InitWindow(Convertir::MetrosEnPixeles(40), Convertir::MetrosEnPixeles(30), "RayBox 1.0");
     SetTargetFPS(60);
 
     RayRectangle r1({80, 80, 50, 50}, 10.f, BLUE);
@@ -64,7 +65,9 @@ int main(int argc, char *argv[])
     // Fisicas
     b2World physicsWorld(b2Vec2(0, 10));
 
-    RayBoxRectangle prec(new RayRectangle({1.f, 1.f, 4.f, 4.f}, 10.f, RED), &physicsWorld, b2_dynamicBody);
+    RayBoxRectangle prec(new RayRectangle({10.f, 1.f, 2.f, 2.f}, 10.f, RED), &physicsWorld, b2_dynamicBody);
+    RayBoxRectangle flat(new RayRectangle({10.f, 20.f, 3.f, 1.f}, 0.f, GREEN), &physicsWorld, b2_staticBody);
+    prec.body->GetFixtureList()->SetRestitution(0.3f);
 
     while (!WindowShouldClose())
     {
@@ -73,6 +76,7 @@ int main(int argc, char *argv[])
 
         physicsWorld.Step(1.f / 60.f, 6, 3);
         prec.syncGraphicsWithPhysics();
+        flat.syncGraphicsWithPhysics();
 
         BeginDrawing();
         ClearBackground(GRAY);
@@ -86,6 +90,7 @@ int main(int argc, char *argv[])
         h1.draw();
 
         prec.draw();
+        flat.draw();
 
         EndDrawing();
     }

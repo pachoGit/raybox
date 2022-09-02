@@ -2,6 +2,7 @@
 #include <box2d/b2_polygon_shape.h>
 #include <raylib.h>
 
+#include "Convertir.hpp"
 #include "RayBoxRectangle.hpp"
 #include "RayRectangle.hpp"
 
@@ -30,7 +31,7 @@ RayBoxRectangle::RayBoxRectangle(RayRectangle *_rec, b2World *_world, b2BodyType
     rec = _rec;
     b2BodyDef bdef;
     bdef.type = type;
-    bdef.position.Set(rec->rec.x, rec->rec.x);
+    bdef.position.Set(rec->rec.x, rec->rec.y);
     bdef.angle = rec->rotation * DEG2RAD;
     body = world->CreateBody(&bdef);
     createInitialCollider();
@@ -62,7 +63,31 @@ void RayBoxRectangle::syncGraphicsWithPhysics()
 void RayBoxRectangle::draw()
 {
     if (rec)
+    {
+        Rectangle tempRec = rec->rec;
+        Vector2 tempOrigin = rec->origin;
+        rec->rec = Convertir::MetrosEnPixeles(tempRec);
+        rec->origin = Convertir::MetrosEnPixeles(tempOrigin);
         rec->draw();
+        rec->rec = tempRec;
+        rec->origin = tempOrigin;
+    }
+}
+
+Vector2 RayBoxRectangle::getPosition() const
+{
+    Vector2 position = {0};
+    if (rec)
+        position = rec->getPosition();
+    return position;
+}
+
+float RayBoxRectangle::getAngle() const
+{
+    float angle = 0.f;
+    if (rec)
+        angle = rec->rotation;
+    return angle;
 }
 
 void RayBoxRectangle::createInitialCollider()

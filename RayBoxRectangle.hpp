@@ -4,6 +4,7 @@
 #include <box2d/b2_body.h>
 #include <box2d/b2_world.h>
 #include <box2d/box2d.h>
+
 #include "RayRectangle.hpp"
 
 class RayBoxRectangle
@@ -38,6 +39,10 @@ class RayBoxRectangle
 
         // Dibujar el cuerpo y el objeto
         void draw();
+
+        Vector2 getPosition() const;
+
+        float getAngle() const;
 
     private:
 
