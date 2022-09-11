@@ -17,11 +17,7 @@ RayBoxRectangle::RayBoxRectangle(Rectangle _rec, float _rotation, Color _color, 
 {
     world = _world;
     rec = new RayRectangle(_rec, _rotation, _color);
-    b2BodyDef bdef;
-    bdef.type = type;
-    bdef.position.Set(rec->rec.x, rec->rec.y);
-    bdef.angle = rec->rotation * DEG2RAD;
-    body = world->CreateBody(&bdef);
+    createDefaultBody(type);
     createInitialCollider();
 }
 
@@ -29,11 +25,7 @@ RayBoxRectangle::RayBoxRectangle(RayRectangle *_rec, b2World *_world, b2BodyType
 {
     world = _world;
     rec = _rec;
-    b2BodyDef bdef;
-    bdef.type = type;
-    bdef.position.Set(rec->rec.x, rec->rec.y);
-    bdef.angle = rec->rotation * DEG2RAD;
-    body = world->CreateBody(&bdef);
+    createDefaultBody(type);
     createInitialCollider();
 }
 
@@ -90,8 +82,21 @@ float RayBoxRectangle::getAngle() const
     return angle;
 }
 
+void RayBoxRectangle::createDefaultBody(b2BodyType type)
+{
+    if (!rec)
+        return;
+    b2BodyDef bdef;
+    bdef.type = type;
+    bdef.position.Set(rec->rec.x, rec->rec.y);
+    bdef.angle = rec->rotation * DEG2RAD;
+    body = world->CreateBody(&bdef);
+}
+
 void RayBoxRectangle::createInitialCollider()
 {
+    if (!rec || !body)
+        return;
     b2PolygonShape shape;
     Vector2 half = rec->getHalfDimension();
     shape.SetAsBox(half.x, half.y);

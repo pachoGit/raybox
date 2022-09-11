@@ -6,6 +6,7 @@
 #include <raylib.h>
 
 #include "Convertir.hpp"
+#include "RayBoxCircle.hpp"
 #include "RayBoxRectangle.hpp"
 #include "RayRectangle.hpp"
 #include "RayCircle.hpp"
@@ -68,6 +69,10 @@ int main(int argc, char *argv[])
     RayBoxRectangle prec(new RayRectangle({10.f, 1.f, 2.f, 2.f}, 10.f, RED), &physicsWorld, b2_dynamicBody);
     RayBoxRectangle flat(new RayRectangle({10.f, 20.f, 3.f, 1.f}, 0.f, GREEN), &physicsWorld, b2_staticBody);
     prec.body->GetFixtureList()->SetRestitution(0.3f);
+
+    RayBoxCircle fcircle(new RayCircle({10, 4}, 2.f, BLUE), &physicsWorld, b2_dynamicBody);
+
+    // Me quede el en el dibujar de RayBoxCircle aun falta sincronizar :D
 
     while (!WindowShouldClose())
     {

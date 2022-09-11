@@ -46,6 +46,9 @@ class RayBoxRectangle
 
     private:
 
+        // Crea el cuerpo fisico inicial
+        void createDefaultBody(b2BodyType type);
+
         // Crea un colisionador rectangular por defecto para el objeto
         // Los valores del colisionador (fixture) tambien son por defecto provenientes de box2d
         void createInitialCollider();
